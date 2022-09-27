@@ -15,6 +15,7 @@ public class PaymentServiceApplication {
     }
 
     public static void main(String[] args) {
+        System.out.println("starting application...");
         SpringApplication.run(PaymentServiceApplication.class, args);
     }
 
