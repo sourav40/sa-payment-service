@@ -15,11 +15,13 @@ pipeline {
 
           stage('Build Docker Image') {
               steps {
+
                       script{
                         sh 'docker build -t payment-service .'
                       }
+
      }
-     }
+   }
 
             stage('Push Docker Image To Docker Hub') {
                    steps {
