@@ -21,7 +21,7 @@ public class WebController {
 
     @GetMapping("/checkout")
     public String checkout(@RequestParam(value = "code") String code) {
-        paymentService.pushPaymentResponseToPaymentProducer(code);
+        paymentService.pushPaymentResponseToPaymentProducer(code, null, 0.0, 0.0, null);
         return "checkout";
     }
 }

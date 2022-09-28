@@ -8,5 +8,5 @@ public interface PaymentService {
 
     CreatePaymentResponse savePaymentRequest(PaymentRequestDto paymentRequestDto) throws StripeException;
 
-    void pushPaymentResponseToPaymentProducer(String code);
+    void pushPaymentResponseToPaymentProducer(String token, String bookingCode, Double totalAmount, Double tax, String emailAddress);
 }

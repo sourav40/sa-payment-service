@@ -1,6 +1,9 @@
 package edu.miu.cs590.paymentservice.entity;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -10,6 +13,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Payment {
 
     @Id
@@ -22,5 +28,6 @@ public class Payment {
     private double totalAmount;
     private double tax;
     private String emailAddress;
+    private String token;
 
 }

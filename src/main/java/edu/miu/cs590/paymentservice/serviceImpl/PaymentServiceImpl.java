@@ -1,8 +1,6 @@
 package edu.miu.cs590.paymentservice.serviceImpl;
 
 import com.stripe.exception.StripeException;
-import com.stripe.model.PaymentIntent;
-import com.stripe.param.PaymentIntentCreateParams;
 import edu.miu.cs590.paymentservice.dto.CreatePaymentResponse;
 import edu.miu.cs590.paymentservice.dto.PaymentRequestDto;
 import edu.miu.cs590.paymentservice.dto.PaymentResponseDto;
@@ -35,38 +33,47 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Override
     public CreatePaymentResponse savePaymentRequest(PaymentRequestDto paymentRequestDto) throws StripeException {
-        PaymentIntentCreateParams params =
-                PaymentIntentCreateParams.builder()
-//                            .setAmount(new Long(calculateOrderAmount(postBody.getItems())))
-                        .setAmount(15 * 100L) //stripe amount is always on cent
-                        .setCurrency("usd")
-                        .setAutomaticPaymentMethods(
-                                PaymentIntentCreateParams.AutomaticPaymentMethods
-                                        .builder()
-                                        .setEnabled(true)
-                                        .build()
-                        )
-                        .build();
-
-        Payment payment = paymentMapper.dtoToEntity(paymentRequestDto);
-        payment.setPaymentStatus(Constant.PENDING);
-        paymentRepository.save(payment);
-
-        // Create a PaymentIntent with the order amount and currency
-        PaymentIntent paymentIntent = PaymentIntent.create(params);
-        return new CreatePaymentResponse(paymentIntent.getClientSecret());
+//        PaymentIntentCreateParams params =
+//                PaymentIntentCreateParams.builder()
+////                            .setAmount(new Long(calculateOrderAmount(postBody.getItems())))
+//                        .setAmount(15 * 100L) //stripe amount is always on cent
+//                        .setCurrency("usd")
+//                        .setAutomaticPaymentMethods(
+//                                PaymentIntentCreateParams.AutomaticPaymentMethods
+//                                        .builder()
+//                                        .setEnabled(true)
+//                                        .build()
+//                        )
+//                        .build();
+//
+//        Payment payment = paymentMapper.dtoToEntity(paymentRequestDto);
+//        payment.setPaymentStatus(Constant.PENDING);
+//        paymentRepository.save(payment);
+//
+//        // Create a PaymentIntent with the order amount and currency
+//        PaymentIntent paymentIntent = PaymentIntent.create(params);
+//        return new CreatePaymentResponse(paymentIntent.getClientSecret());
+        return null;
     }
 
     @Override
-    public void pushPaymentResponseToPaymentProducer(String code) {
-        Payment payment = paymentRepository.findByBookingCode(code);
-        payment.setPaymentDate(LocalDateTime.now());
-        payment.setPaymentStatus(Constant.SUCCESS);
+    public void pushPaymentResponseToPaymentProducer(String token, String bookingCode, Double totalAmount, Double tax, String emailAddress) {
+
+        Payment payment = Payment.builder()
+                .token(token)
+                .bookingCode(bookingCode)
+                .totalAmount(totalAmount)
+                .tax(tax)
+                .emailAddress(emailAddress)
+                .paymentStatus(Constant.SUCCESS)
+                .paymentDate(LocalDateTime.now())
+                .build();
+
         paymentRepository.save(payment);
 
         PaymentResponseDto paymentResponseDto = PaymentResponseDto.builder()
                 .paymentStatus(Constant.SUCCESS)
-                .bookingCode(code)
+                .bookingCode(bookingCode)
                 .build();
         paymentProducer.producePaymentResponse(paymentResponseDto);
 
