@@ -26,7 +26,7 @@ pipeline {
                    steps {
                            script{
                            sh 'docker tag payment-service:latest sourav40/payment-service:latest'
-                           sh 'docker login -u sourav40 -p dckr_pat_7bf_hiw7IkCxUP_gDfdg-6OXfw0'
+                           sh 'docker login -u sourav40 -p dckr_pat_9_M2GkzkEBiGSyUJf4JVjXt_PPE'
                            sh 'docker push sourav40/payment-service:latest'
                 }
           }
