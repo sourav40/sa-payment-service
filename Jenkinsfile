@@ -16,7 +16,7 @@ pipeline {
           stage('Build Docker Image') {
               steps {
                       script{
-                        sh 'docker build -t payment-service .'
+                        sh 'docker build -t sourav40/payment-service .'
                       }
 
      }
@@ -25,7 +25,7 @@ pipeline {
             stage('Push Docker Image To Docker Hub') {
                    steps {
                            script{
-                           sh 'docker tag payment-service:latest sourav40/payment-service:latest'
+//                            sh 'docker tag payment-service:latest sourav40/payment-service:latest'
                            sh 'docker login -u sourav40 -p dckr_pat_9_M2GkzkEBiGSyUJf4JVjXt_PPE'
                            sh 'docker push sourav40/payment-service:latest'
                 }
